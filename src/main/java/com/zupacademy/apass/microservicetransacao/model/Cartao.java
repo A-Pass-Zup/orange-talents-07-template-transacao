@@ -61,4 +61,8 @@ public class Cartao {
     public String getIdentificador() {
         return this.identificador;
     }
+
+    public String getEmail() {
+        return this.email;
+    }
 }
