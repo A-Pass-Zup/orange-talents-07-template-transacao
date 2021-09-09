@@ -26,11 +26,11 @@ public class Transacao {
     private BigDecimal valor;
 
     @NotNull
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST})
     private Estabelecimento estabelecimento;
 
     @NotNull
-    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST})
     private Cartao cartao;
 
     @NotNull
@@ -70,6 +70,50 @@ public class Transacao {
         this.estabelecimento = estabelecimento;
         this.cartao = cartao;
         this.efetivadaEm = efetivadaEm;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    /**
+     * Obtém o valor da transação.
+     *
+     * @return
+     */
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    /**
+     * Obtém a data/hora da transação.
+     *
+     * @return
+     */
+    public LocalDateTime getEfetivadaEm() {
+        return efetivadaEm;
+    }
+
+    /**
+     * Obtém o nome do estabelecimento onde foi realizada a transação.
+     *
+     * @return
+     */
+    public String getNomeEstabelecimento() {
+        return this.estabelecimento.getNome();
+    }
+
+    /**
+     * Obtém o identificador do cartão da transação.
+     *
+     * @return
+     */
+    public String getIdentificadorCartao() {
+        return this.cartao.getIdentificador();
     }
 
     @Override

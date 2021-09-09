@@ -2,7 +2,10 @@ package com.zupacademy.apass.microservicetransacao.servidor_eventos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zupacademy.apass.microservicetransacao.model.Cartao;
 import com.zupacademy.apass.microservicetransacao.model.Transacao;
+import com.zupacademy.apass.microservicetransacao.repository.CartaoRepository;
+import com.zupacademy.apass.microservicetransacao.repository.EstabelecimentoRepository;
 
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
@@ -43,13 +46,11 @@ public class TransacaoReceive {
         this.efetivadaEm = efetivadaEm;
     }
 
-    public Transacao converte(EntityManager entityManager) {
+    public Transacao converte(CartaoRepository cartaoRepository, EstabelecimentoRepository estabelecimentoRepository) {
 
-        var cartao = this.cartao.converte();
-        var estabelecimento = this.estabelecimento.converte();
+        var cartao = this.cartao.converte(cartaoRepository);
 
-        entityManager.detach(cartao);
-        entityManager.detach(estabelecimento);
+        var estabelecimento = this.estabelecimento.converte(estabelecimentoRepository);
 
         return new Transacao(this.id,
                 this.valor,

@@ -57,4 +57,8 @@ public class Cartao {
     public int hashCode() {
         return Objects.hash(identificador, email);
     }
+
+    public String getIdentificador() {
+        return this.identificador;
+    }
 }

@@ -63,4 +63,8 @@ public class Estabelecimento {
     public int hashCode() {
         return Objects.hash(nome, cidade, endereco);
     }
+
+    public String getNome() {
+        return this.nome;
+    }
 }

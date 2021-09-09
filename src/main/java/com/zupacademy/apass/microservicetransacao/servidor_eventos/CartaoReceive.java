@@ -3,6 +3,7 @@ package com.zupacademy.apass.microservicetransacao.servidor_eventos;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zupacademy.apass.microservicetransacao.model.Cartao;
+import com.zupacademy.apass.microservicetransacao.repository.CartaoRepository;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,13 @@ public class CartaoReceive {
         this.email = email;
     }
 
-    public Cartao converte() {
+    public Cartao converte(CartaoRepository cartaoRepository) {
+        final var cartaoExistente = cartaoRepository.findByIdentificador(this.id);
+
+        if(cartaoExistente.isPresent()) {
+            return cartaoExistente.get();
+        }
+
         return new Cartao(this.id, this.email);
     }
 }
