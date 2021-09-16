@@ -3,6 +3,8 @@ package com.zupacademy.apass.microservicetransacao.controller;
 import com.zupacademy.apass.microservicetransacao.repository.CartaoRepository;
 import com.zupacademy.apass.microservicetransacao.repository.TransacaoRepository;
 import com.zupacademy.apass.microservicetransacao.response.TransacaoResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ public class TransacaoController {
     @Autowired
     private CartaoRepository cartaoRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(TransacaoController.class);
+
     @GetMapping("/{identificadorCartao}/ultimas")
     public ResponseEntity<?> ultimasTransacoes(@PathVariable @NotBlank String identificadorCartao,
                                                @AuthenticationPrincipal Jwt principal) {
@@ -33,12 +37,14 @@ public class TransacaoController {
         final var possivelCartao = this.cartaoRepository.findByIdentificador(identificadorCartao);
 
         if(possivelCartao.isEmpty()) {
+            logger.info("Cartão não encontrado!");
             return ResponseEntity.notFound().build();
         }
 
         final var cartao = possivelCartao.get();
 
         if(!cartao.getEmail().equals(principal.getClaimAsString("email"))) {
+            this.logger.info("O cartão informado não pertecen ao usuário logado!");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
